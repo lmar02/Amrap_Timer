@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Amrap_Timer</string>
+    <string name="textTitle">AMRAP Timer</string>
+    <string name="button_30_15_Text">30 Seconds / 15 Seconds</string>
+    <string name="button_30_30_Text">30 Seconds / 30 Seconds</string>
+    <string name="button_1min_30_text">1 Minute / 30 Seconds</string>
+</resources>
