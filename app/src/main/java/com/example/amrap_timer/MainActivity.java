@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
                 //creating new intent for new activity that is being created
                 Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
-                // adding extra info for the next activty
+                // adding extra info for the next activity
                 intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
                 intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
 
@@ -56,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                // setting time intervals in seconds
+                timeIntervalOneInSeconds = 30;
+                timeIntervalTwoInSeconds = 30;
+                //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
+                //creating new intent for new activity that is being created
+                Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
+                // adding extra info for the next activity
+                intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
+                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
 
             }
         });
@@ -66,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                // setting time intervals in seconds
+                timeIntervalOneInSeconds = 60;
+                timeIntervalTwoInSeconds = 30;
+                //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
+                //creating new intent for new activity that is being created
+                Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
+                // adding extra info for the next activity
+                intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
+                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
 
             }
         });
