@@ -1,6 +1,5 @@
 package com.example.amrap_timer;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,8 +14,10 @@ public class MainActivity extends AppCompatActivity {
     Button button30_15;
     Button button30_30;
     Button button1min_30;
-    int timeIntervalOneInSeconds = 0;
-    int timeIntervalTwoInSeconds = 0;
+    long timeIntervalOneInMilliseconds = 0;
+    long timeIntervalTwoInMilliseconds = 0;
+    long totalTime = 0;
+    int totalCycles = 0;
 
 
     @Override
@@ -37,14 +38,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 // setting time intervals in seconds
-                timeIntervalOneInSeconds = 30;
-                timeIntervalTwoInSeconds = 15;
+                timeIntervalOneInMilliseconds = 30000;
+                timeIntervalTwoInMilliseconds = 15000;
+                totalTime = 1800000;
+                totalCycles = 80;
+
                 //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
                 //creating new intent for new activity that is being created
                 Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
                 // adding extra info for the next activity
-                intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
-                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
+                intent.putExtra("timeIntervalOne",timeIntervalOneInMilliseconds);
+                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInMilliseconds);
+                intent.putExtra("TotalTime", totalTime);
+                intent.putExtra("TotalCycles", totalCycles);
+                startActivity(intent);
 
 
             }
@@ -57,14 +64,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 // setting time intervals in seconds
-                timeIntervalOneInSeconds = 30;
-                timeIntervalTwoInSeconds = 30;
+                timeIntervalOneInMilliseconds = 30000;
+                timeIntervalTwoInMilliseconds = 30000;
+                totalTime = 1800000;
+                totalCycles = 60;
+
                 //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
                 //creating new intent for new activity that is being created
                 Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
                 // adding extra info for the next activity
-                intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
-                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
+                intent.putExtra("timeIntervalOne",timeIntervalOneInMilliseconds);
+                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInMilliseconds);
+                intent.putExtra("TotalTime", totalTime);
+                intent.putExtra("TotalCycles", totalCycles);
+                startActivity(intent);
 
             }
         });
@@ -76,14 +89,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 // setting time intervals in seconds
-                timeIntervalOneInSeconds = 60;
-                timeIntervalTwoInSeconds = 30;
+                timeIntervalOneInMilliseconds = 60000;
+                timeIntervalTwoInMilliseconds = 30000;
+                totalTime = 2700000;
+                totalCycles = 60;
                 //40 complete cycles = a 30 minutes workout or 80 alternating cycles of 30 sec and 15 sec
                 //creating new intent for new activity that is being created
                 Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
                 // adding extra info for the next activity
-                intent.putExtra("timeIntervalOne",timeIntervalOneInSeconds);
-                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInSeconds);
+                intent.putExtra("timeIntervalOne",timeIntervalOneInMilliseconds);
+                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInMilliseconds);
+                intent.putExtra("TotalTime", totalTime);
+                intent.putExtra("TotalCycles", totalCycles);
+                startActivity(intent);
 
             }
         });

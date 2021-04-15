@@ -4,4 +4,7 @@
     <string name="button_30_15_Text">30 Seconds / 15 Seconds</string>
     <string name="button_30_30_Text">30 Seconds / 30 Seconds</string>
     <string name="button_1min_30_text">1 Minute / 30 Seconds</string>
+    <string name ="cycleTextTitle"> Cycle:</string>
+    <string name ="StartButton"> Start</string>
+    <string name ="StopButton"> Stop</string>
 </resources>
