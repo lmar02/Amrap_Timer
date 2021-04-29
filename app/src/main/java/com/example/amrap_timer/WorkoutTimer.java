@@ -21,9 +21,12 @@ public class WorkoutTimer extends AppCompatActivity {
     private boolean runningTimer = false;
     private boolean cycleSwitch = false;
     private int totalCycles = 0;
+    private int currentCycle= 0;
+
     private long totalTimerAmount = 0;
     private long timeIntervalOneInMilliseconds = 0;
     private long timeIntervalTwoInMilliseconds = 0;
+    private long currentCycleTime= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class WorkoutTimer extends AppCompatActivity {
 
 
 
-
+        //gets data from previous activity
         timeIntervalOneInMilliseconds = getIntent().getLongExtra("timeIntervalOne",0);
         timeIntervalTwoInMilliseconds = getIntent().getLongExtra("timeIntervalTwo",0);
         totalCycles = getIntent().getIntExtra("TotalCycles", 0);
@@ -48,8 +51,9 @@ public class WorkoutTimer extends AppCompatActivity {
 
         //set up TimerText with the correct duration
         updateTimer();
+        updateCycleTimerText();
 
-
+        //button to start timer
         start_Pause_Button.setOnClickListener(new View.OnClickListener()
         {
 
@@ -59,8 +63,18 @@ public class WorkoutTimer extends AppCompatActivity {
             }
         });
 
+        //button to stop timer
+        start_Pause_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
     }
+
+
     public void startPause()
     {
         if(runningTimer)
@@ -69,6 +83,7 @@ public class WorkoutTimer extends AppCompatActivity {
         }else
             StartTimer();
     }
+    
     public void switchInterval()
     {
         if(cycleSwitch)
@@ -82,24 +97,18 @@ public class WorkoutTimer extends AppCompatActivity {
 
     public void StartTimer()
     {
+        //set bool to true
         runningTimer = true;
-        countDownTimer =new CountDownTimer(totalTimerAmount, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
 
+        //start main timer
+        startMainTimer();
 
-                totalTimerAmount = millisUntilFinished;
-                updateTimer();
-            }
+        //start cycle timer
+        startCycleTimer();
 
-            @Override
-            public void onFinish() {
-
-
-            }
-        }.start();
+        //change text on button
         start_Pause_Button.setText("Pause");
-        runningTimer = true;
+
 
     }
 
@@ -110,7 +119,8 @@ public class WorkoutTimer extends AppCompatActivity {
         countDownTimer.cancel();
     }
 
-    //to update the textview
+    //to update the Total timer Textview
+    //set up millisecond to second to text
     public void updateTimer()
     {
         int minutes =  (int) totalTimerAmount / 60000;
@@ -120,9 +130,107 @@ public class WorkoutTimer extends AppCompatActivity {
         if(seconds<10) timeLeftString+="0";
         timeLeftString+=seconds;
 
+
+
+
         totalTimerText.setText(timeLeftString);
 
     }
+    //to update the Total timer Textview
+    //set up millisecond to second to text
+    public void updateCycleTimerText()
+    {
+        int seconds = (int)currentCycleTime/1000;
+        String cycleTimeLeftString = " ";
+        cycleTimeLeftString = "00:";
+        if(seconds<10) cycleTimeLeftString+="0";
+        cycleTimeLeftString+=seconds;
+
+        cycleTimerText.setText(cycleTimeLeftString);
+    }
+
+    //start main timer
+    public void startMainTimer()
+    {
+        countDownTimer =new CountDownTimer(totalTimerAmount, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+
+                totalTimerAmount = millisUntilFinished;
+                updateTimer();
+
+
+            }
+
+            @Override
+            public void onFinish() {
+                runningTimer = false;
+
+
+            }
+        }.start();
+
+    }
+    //start cycle timer
+    public void startCycleTimer()
+    {
+
+        if(currentCycle!=totalCycles && runningTimer == false)
+        {
+
+            if(currentCycle%2==0)
+            {
+                countDownTimer =new CountDownTimer(timeIntervalTwoInMilliseconds, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+
+                        currentCycleTime = millisUntilFinished;
+                        updateTimer();
+
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        startMainTimer();
+
+
+
+                    }
+                }.start();
+            }
+            else
+            countDownTimer =new CountDownTimer(timeIntervalOneInMilliseconds, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+
+                    currentCycleTime = millisUntilFinished;
+                    updateTimer();
+
+
+                }
+
+                @Override
+                public void onFinish() {
+                    startMainTimer();
+
+
+
+                }
+            }.start();
+        }
+
+
+
+    }
+
+
+
+
+
 
 
 
