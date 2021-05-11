@@ -2,6 +2,8 @@ package com.example.amrap_timer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -19,10 +21,8 @@ public class WorkoutTimer extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private CountDownTimer countDownCycleTimer;
     private boolean runningTimer = false;
-    private boolean cycleSwitch = false;
     private int totalCycles = 0;
     private int currentCycle= 0;
-
     private long totalTimerAmount = 0;
     private long timeIntervalOneInMilliseconds = 0;
     private long timeIntervalTwoInMilliseconds = 0;
@@ -38,10 +38,7 @@ public class WorkoutTimer extends AppCompatActivity {
         stopButton = findViewById(R.id.stopButton);
         totalTimerText = findViewById(R.id.main_Timer);
         cycleTimerText = findViewById(R.id.cycleTimer);
-        cycleCounterText = findViewById(R.id.cycleCounter);
-
-
-
+        cycleCounterText = findViewById(R.id.cycleCounterText);
 
         //gets data from previous activity
         timeIntervalOneInMilliseconds = getIntent().getLongExtra("timeIntervalOne",0);
@@ -54,9 +51,7 @@ public class WorkoutTimer extends AppCompatActivity {
         updateCycleTimerText();
 
         //button to start timer
-        start_Pause_Button.setOnClickListener(new View.OnClickListener()
-        {
-
+        start_Pause_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startPause();
@@ -64,14 +59,13 @@ public class WorkoutTimer extends AppCompatActivity {
         });
 
         //button to stop timer
-        start_Pause_Button.setOnClickListener(new View.OnClickListener() {
+        stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(WorkoutTimer.this, MainActivity.class );
+                startActivity(intent);
             }
         });
-
-
     }
 
 
@@ -83,33 +77,17 @@ public class WorkoutTimer extends AppCompatActivity {
         }else
             StartTimer();
     }
-    
-    public void switchInterval()
-    {
-        if(cycleSwitch)
-        {
-            cycleSwitch = false;
-        }else
-            cycleSwitch = true;
-
-    }
-
 
     public void StartTimer()
     {
         //set bool to true
         runningTimer = true;
-
         //start main timer
         startMainTimer();
-
         //start cycle timer
         startCycleTimer();
-
         //change text on button
         start_Pause_Button.setText("Pause");
-
-
     }
 
     public void PauseTimer()
@@ -117,6 +95,7 @@ public class WorkoutTimer extends AppCompatActivity {
         runningTimer = false;
         start_Pause_Button.setText("Start");
         countDownTimer.cancel();
+        countDownCycleTimer.cancel();
     }
 
     //to update the Total timer Textview
@@ -129,24 +108,25 @@ public class WorkoutTimer extends AppCompatActivity {
         timeLeftString = "" + minutes + ":";
         if(seconds<10) timeLeftString+="0";
         timeLeftString+=seconds;
-
-
-
-
         totalTimerText.setText(timeLeftString);
-
     }
+
     //to update the Total timer Textview
     //set up millisecond to second to text
     public void updateCycleTimerText()
     {
-        int seconds = (int)currentCycleTime/1000;
+        int minutes = (int)currentCycleTime/60000;
+        int seconds = (int)currentCycleTime % 60000/1000;
         String cycleTimeLeftString = " ";
-        cycleTimeLeftString = "00:";
+        cycleTimeLeftString = ""+minutes+":";
         if(seconds<10) cycleTimeLeftString+="0";
         cycleTimeLeftString+=seconds;
-
         cycleTimerText.setText(cycleTimeLeftString);
+    }
+    public void updateCycleCount()
+    {
+        String cycleString = currentCycle + " / " + totalCycles;
+        cycleCounterText.setText(cycleString);
     }
 
     //start main timer
@@ -155,85 +135,62 @@ public class WorkoutTimer extends AppCompatActivity {
         countDownTimer =new CountDownTimer(totalTimerAmount, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-
-
                 totalTimerAmount = millisUntilFinished;
                 updateTimer();
-
-
             }
-
             @Override
             public void onFinish() {
                 runningTimer = false;
-
-
             }
         }.start();
-
     }
+
     //start cycle timer
     public void startCycleTimer()
     {
+        currentCycle = 1;
 
-        if(currentCycle!=totalCycles && runningTimer == false)
+        if(currentCycle!=totalCycles && runningTimer == true)
         {
-
             if(currentCycle%2==0)
             {
-                countDownTimer =new CountDownTimer(timeIntervalTwoInMilliseconds, 1000) {
+                countDownCycleTimer =new CountDownTimer(timeIntervalTwoInMilliseconds, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-
-
                         currentCycleTime = millisUntilFinished;
-                        updateTimer();
-
-
+                        updateCycleTimerText();
+                        updateCycleCount();
                     }
-
                     @Override
                     public void onFinish() {
-                        startMainTimer();
-
-
-
+                        currentCycle++;
+                        updateCycleCount();
+                        MediaPlayer beep = MediaPlayer.create(WorkoutTimer.this, R.raw.beep);
+                        beep.start();
+                        startCycleTimer();
                     }
                 }.start();
             }
             else
-            countDownTimer =new CountDownTimer(timeIntervalOneInMilliseconds, 1000) {
+                countDownCycleTimer =new CountDownTimer(timeIntervalOneInMilliseconds, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-
-
                     currentCycleTime = millisUntilFinished;
-                    updateTimer();
-
-
+                    updateCycleTimerText();
+                    updateCycleCount();
                 }
 
                 @Override
                 public void onFinish() {
-                    startMainTimer();
-
-
-
+                    currentCycle++;
+                    updateCycleCount();
+                    MediaPlayer beep = MediaPlayer.create(WorkoutTimer.this, R.raw.beep);
+                    beep.start();
+                    startCycleTimer();
                 }
             }.start();
         }
-
-
-
     }
-
-
-
-
-
-
-
-
 }
 
 

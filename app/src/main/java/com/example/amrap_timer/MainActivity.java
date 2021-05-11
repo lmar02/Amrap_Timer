@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this,WorkoutTimer.class );
                 // adding extra info for the next activity
                 intent.putExtra("timeIntervalOne",timeIntervalOneInMilliseconds);
-                intent.putExtra("TimeIntervalTwo", timeIntervalTwoInMilliseconds);
+                intent.putExtra("timeIntervalTwo", timeIntervalTwoInMilliseconds);
                 intent.putExtra("TotalTime", totalTime);
                 intent.putExtra("TotalCycles", totalCycles);
                 startActivity(intent);
